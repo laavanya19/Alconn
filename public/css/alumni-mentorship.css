@@ -1,0 +1,89 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+}
+
+header {
+  background-color: #007bff;
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+header button {
+  background-color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
+}
+
+header button:hover {
+  background-color: #0056b3;
+  color: white;
+}
+
+main {
+  padding: 20px;
+}
+
+h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+#mentorshipList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.mentorship-box {
+  background-color: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  margin-bottom: 20px;
+}
+
+.mentorship-box h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.mentorship-box p {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.mentorship-box button {
+  background-color: #ff4c4c;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.mentorship-box button:hover {
+  background-color: #e60000;
+}
+
+#offerMentorship {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+#offerMentorship:hover {
+  background-color: #218838;
+}

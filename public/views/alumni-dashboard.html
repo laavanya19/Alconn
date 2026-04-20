@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Alumni Dashboard | ALCONN</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .dashboard-container {
+      max-width: 900px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      display: inline-block;
+    }
+
+    /* Logout Button Style */
+    #logoutBtn {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: background-color 0.3s ease;
+      position: absolute;
+      top: 30px;
+      right: 30px;
+    }
+
+    #logoutBtn:hover {
+      background-color: #0056b3;
+    }
+
+    section {
+      margin-bottom: 30px;
+    }
+
+    /* Your Profile Box Style */
+    #profile {
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      max-width: 500px;
+      margin: auto;
+    }
+
+    #profile input {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    #profile button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      padding: 12px;
+    }
+
+    #profile button:hover {
+      background-color: #0056b3;
+    }
+
+    /* Features Section - Box Style */
+    .feature-box {
+      display: inline-block;
+      width: 30%;
+      margin: 15px 1%;
+      padding: 25px;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.3s ease, background 0.3s;
+    }
+
+    .feature-box:hover {
+      transform: scale(1.05);
+      background-color: #f1f1f1;
+    }
+
+    /* Layout for the Feature Boxes */
+    .features {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 30px;
+    }
+
+    /* Button Style in the Feature Boxes */
+    .feature-box button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .feature-box button:hover {
+      background-color: #0056b3;
+    }
+
+    footer {
+      background-color: #1c1c6b;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      margin-top: 50px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Welcome, <span id="alumniName">Alumni</span></h1>
+    <button id="logoutBtn">Logout</button>
+  </header>
+
+  <main class="dashboard-container">
+    <!-- Profile Section -->
+    <section id="profile">
+      <h2>Your Profile</h2>
+      <form id="editProfileForm" enctype="multipart/form-data">
+        <input type="text" id="firstName" name="firstName" placeholder="First Name" required>
+        <input type="text" id="lastName" name="lastName" placeholder="Last Name" required>
+        <input type="text" id="rollNumber" name="rollNumber" placeholder="Roll Number" readonly>
+        <input type="email" id="email" name="email" placeholder="Email" required>
+        <input type="text" id="branch" name="branch" placeholder="Branch" required>
+        <input type="number" id="passoutYear" name="passoutYear" placeholder="Passout Year" required>
+        <input type="text" id="currentCompany" name="currentCompany" placeholder="Current Company">
+        <input type="text" id="currentRole" name="currentRole" placeholder="Current Role">
+        <input type="url" id="linkedin" name="linkedin" placeholder="LinkedIn URL">
+        <!--<button type="submit">Save Changes</button>-->
+      </form>
+    </section>
+
+    <!-- Features Section -->
+    <section>
+      <h2>Opportunities & Services</h2>
+      <div class="features">
+        <div class="feature-box" onclick="window.location.href='/views/alumni-mentorship.html'">
+          <h3>🎯 Mentorship</h3>
+          <button>Offer Mentorship</button>
+        </div>
+        <div class="feature-box" onclick="window.location.href='/views/alumni-job-offers.html'">
+          <h3>💼 Job Offers</h3>
+          <button>Post a Job</button>
+        </div>
+        <div class="feature-box" onclick="window.location.href='/views/alumni-events.html'">
+          <h3>📅 Events</h3>
+          <button>View Events</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 ALCONN | Empowering Careers & Connections</p>
+  </footer>
+
+  <script>
+    const alumniData = JSON.parse(localStorage.getItem('alumniData'));
+
+    // Load alumni data into form fields
+    if (alumniData) {
+      document.getElementById('alumniName').innerText = alumniData.firstName + ' ' + alumniData.lastName;
+      document.getElementById('firstName').value = alumniData.firstName;
+      document.getElementById('lastName').value = alumniData.lastName;
+      document.getElementById('rollNumber').value = alumniData.rollNumber;
+      document.getElementById('email').value = alumniData.email;
+      document.getElementById('branch').value = alumniData.branch;
+      document.getElementById('passoutYear').value = alumniData.passoutYear;
+      document.getElementById('currentCompany').value = alumniData.currentCompany;
+      document.getElementById('currentRole').value = alumniData.currentRole;
+      document.getElementById('linkedin').value = alumniData.linkedin;
+    }
+
+    // Handle Profile Update
+    document.getElementById('editProfileForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const formData = new FormData(this);
+      formData.append('rollNumber', alumniData.rollNumber); // Attach roll number for identification
+
+      try {
+        const response = await fetch('/update-alumni-profile', {
+          method: 'POST',
+          body: formData
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.success) {
+          alert('Profile updated successfully!');
+          // Update localStorage with latest data
+          localStorage.setItem('alumniData', JSON.stringify(result.updatedAlumni));
+          window.location.reload(); // Reload to reflect updated data
+        } else {
+          alert(result.message || 'Failed to update profile.');
+        }
+      } catch (error) {
+        console.error('Update Error:', error);
+        alert('An error occurred. Please try again later.');
+      }
+    });
+
+    // Logout
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      localStorage.removeItem('alumniData');
+      window.location.href = '/alumni-login';
+    });
+  </script>
+</body>
+</html>

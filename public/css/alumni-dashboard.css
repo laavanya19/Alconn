@@ -1,0 +1,153 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Body Styling */
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    background: #f4f4f4;
+    color: #333;
+    padding: 20px;
+  }
+  
+  /* Header */
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #003366;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+  
+  header h1 {
+    font-size: 1.8rem;
+  }
+  
+  header button {
+    padding: 8px 16px;
+    background: #ff4b5c;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+  }
+  
+  header button:hover {
+    background: #e04353;
+  }
+  
+  /* Navigation */
+  nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+  
+  nav a {
+    text-decoration: none;
+    color: #003366;
+    font-weight: bold;
+    padding: 10px 15px;
+    border: 2px solid #003366;
+    border-radius: 20px;
+  }
+  
+  nav a:hover {
+    background: #003366;
+    color: white;
+  }
+  
+  /* Main Sections */
+  main section {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  h2 {
+    margin-bottom: 15px;
+    color: #003366;
+  }
+  
+  p {
+    margin-bottom: 10px;
+  }
+  
+  button {
+    padding: 10px 20px;
+    background: #007acc;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  button:hover {
+    background: #006bb3;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    nav ul {
+      flex-direction: column;
+      gap: 10px;
+    }
+  
+    header {
+      flex-direction: column;
+      gap: 10px;
+    }
+  }
+  /* Form and Profile Picture Styling */
+#profile img {
+    display: block;
+    margin: 10px auto;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #007acc;
+  }
+  
+  #profile form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  #profile input[type="text"],
+  #profile input[type="email"],
+  #profile input[type="number"],
+  #profile input[type="url"],
+  #profile input[type="file"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    width: 100%;
+  }
+  
+  #profile button {
+    padding: 12px;
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  #profile button:hover {
+    background: #218838;
+  }
+  
+  

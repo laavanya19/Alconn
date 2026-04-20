@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Alumni Events | ALCONN</title>
+  <link rel="stylesheet" href="../css/alumni-events.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <h1>🎓 Alumni Events</h1>
+    <p>Stay updated with the latest events from ALCONN!</p>
+    <button onclick="window.location.href='alumni-dashboard.html'">Back to Dashboard</button>
+    <!-- Search Bar --><p></p>
+    <input type="text" id="searchBar" placeholder="Search for events..." onkeyup="searchEvents()" />
+  </header>
+
+  <main class="events-container">
+    <ul id="eventsList" class="event-list"></ul>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 ALCONN | Empowering Alumni Connections</p>
+  </footer>
+
+  <script>
+    let events = []; // Store events globally
+
+    async function fetchEvents() {
+      try {
+        const response = await fetch('/admin/events');
+        events = await response.json(); // Store events in global variable
+
+        displayEvents(events); // Display all events initially
+      } catch (error) {
+        console.error('Error fetching events:', error);
+      }
+    }
+
+    function displayEvents(eventsToDisplay) {
+      const list = document.getElementById('eventsList');
+      list.innerHTML = ''; // Clear existing list
+
+      eventsToDisplay.forEach(event => {
+        const li = document.createElement('li');
+        li.classList.add('event-card');
+
+        li.innerHTML = `
+          <h2>${event.title}</h2>
+          <p class="description">${event.description}</p>
+          <div class="details">
+            <p><strong>Date:</strong> ${event.date.slice(0, 10)}</p>
+            <p><strong>Time:</strong> ${event.time}</p>
+            <p><strong>Location:</strong> ${event.location}</p>
+            <p><strong>Mode:</strong> ${event.mode}</p>
+            <p><strong>Organizer:</strong> ${event.organizerName}</p>
+            <p><strong>Audience:</strong> ${event.audience}</p>
+            <p><strong>Contact:</strong> ${event.contactInfo}</p>
+          </div>
+          <a href="${event.registrationLink}" class="register-btn" target="_blank">Register Here</a>
+        `;
+
+        list.appendChild(li);
+      });
+    }
+
+    function searchEvents() {
+      const query = document.getElementById('searchBar').value.toLowerCase();
+      const filteredEvents = events.filter(event => 
+        event.title.toLowerCase().includes(query) ||
+        event.description.toLowerCase().includes(query) ||
+        event.location.toLowerCase().includes(query) ||
+        event.organizerName.toLowerCase().includes(query)
+      );
+
+      displayEvents(filteredEvents); // Display filtered events
+    }
+
+    // Fetch events on page load
+    fetchEvents();
+  </script>
+</body>
+</html>

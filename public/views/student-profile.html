@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 500px;
+            margin: 50px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .profile-card {
+            text-align: left;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fafafa;
+            margin-top: 10px;
+        }
+
+        p {
+            font-size: 16px;
+            margin: 8px 0;
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 15px;
+            background: #007BFF;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Student Profile</h1>
+        <div class="profile-card">
+            <p><strong>Roll Number:</strong> <span id="rollNumber"></span></p>
+            <p><strong>Name:</strong> <span id="name"></span></p>
+            <input type="text" id="nameInput" class="hidden">
+
+            <p><strong>Department:</strong> <span id="department"></span></p>
+            <input type="text" id="departmentInput" class="hidden">
+
+            <p><strong>Joining Year:</strong> <span id="joiningYear"></span></p>
+            <input type="text" id="joiningYearInput" class="hidden">
+
+            <p><strong>Passing Year:</strong> <span id="passingYear"></span></p>
+            <input type="text" id="passingYearInput" class="hidden">
+        </div>
+
+        <button id="editBtn" class="btn">Edit</button>
+        <button id="saveBtn" class="btn hidden">Save</button>
+        <a href="/student-dashboard" class="btn">Back to Dashboard</a>
+    </div>
+    
+    <script>
+        // Fetch student details from API
+        function fetchProfile() {
+            fetch("/api/student-profile")
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("rollNumber").textContent = data.rollNumber;
+                    document.getElementById("name").textContent = data.firstName + " " + data.lastName;
+                    document.getElementById("nameInput").value = data.firstName + " " + data.lastName;
+                    document.getElementById("department").textContent = data.department;
+                    document.getElementById("departmentInput").value = data.department;
+                    document.getElementById("joiningYear").textContent = data.joiningYear;
+                    document.getElementById("joiningYearInput").value = data.joiningYear;
+                    document.getElementById("passingYear").textContent = data.passingYear;
+                    document.getElementById("passingYearInput").value = data.passingYear;
+                })
+                .catch(error => console.error("Error fetching profile:", error));
+        }
+
+        fetchProfile(); // Load profile when the page loads
+
+        // Enable editing
+        document.getElementById("editBtn").addEventListener("click", function () {
+            document.getElementById("name").classList.add("hidden");
+            document.getElementById("department").classList.add("hidden");
+            document.getElementById("joiningYear").classList.add("hidden");
+            document.getElementById("passingYear").classList.add("hidden");
+
+            document.getElementById("nameInput").classList.remove("hidden");
+            document.getElementById("departmentInput").classList.remove("hidden");
+            document.getElementById("joiningYearInput").classList.remove("hidden");
+            document.getElementById("passingYearInput").classList.remove("hidden");
+
+            document.getElementById("editBtn").classList.add("hidden");
+            document.getElementById("saveBtn").classList.remove("hidden");
+        });
+
+        // Save updated details
+        document.getElementById("saveBtn").addEventListener("click", function () {
+            const updatedData = {
+                firstName: document.getElementById("nameInput").value.split(" ")[0], // Extract first name
+                lastName: document.getElementById("nameInput").value.split(" ")[1] || "", // Extract last name
+                department: document.getElementById("departmentInput").value,
+                joiningYear: document.getElementById("joiningYearInput").value,
+                passingYear: document.getElementById("passingYearInput").value
+            };
+
+            fetch("/api/student-profile", {
+                method: "PUT",  // Use PUT or POST as required by your API
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(updatedData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Update UI with new data
+                document.getElementById("name").textContent = data.firstName + " " + data.lastName;
+                document.getElementById("department").textContent = data.department;
+                document.getElementById("joiningYear").textContent = data.joiningYear;
+                document.getElementById("passingYear").textContent = data.passingYear;
+
+                // Hide input fields and show text
+                document.getElementById("name").classList.remove("hidden");
+                document.getElementById("department").classList.remove("hidden");
+                document.getElementById("joiningYear").classList.remove("hidden");
+                document.getElementById("passingYear").classList.remove("hidden");
+
+                document.getElementById("nameInput").classList.add("hidden");
+                document.getElementById("departmentInput").classList.add("hidden");
+                document.getElementById("joiningYearInput").classList.add("hidden");
+                document.getElementById("passingYearInput").classList.add("hidden");
+
+                document.getElementById("editBtn").classList.remove("hidden");
+                document.getElementById("saveBtn").classList.add("hidden");
+            })
+            .catch(error => console.error("Error updating profile:", error));
+        });
+    </script>
+</body>
+</html>

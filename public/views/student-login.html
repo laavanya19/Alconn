@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Login | ALCONN</title>
+  <link rel="stylesheet" href="../css/student-login.css">
+</head>
+<body>
+  <div class="login-container">
+    <h1>Student Login</h1>
+    <form id="loginForm" method="POST" class="login-form">
+      <label for="rollNumber">Roll Number</label>
+      <input type="text" id="rollNumber" name="rollNumber" placeholder="Enter Roll Number" required>
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" placeholder="Enter Password" required>
+
+      <button type="submit" class="login-btn">Login</button>
+    </form>
+
+    <p class="extra-options"><a href="/">Back to Home</a></p>
+  </div>
+
+<script>
+  document.getElementById("loginForm").addEventListener("submit", async function(event) {
+    event.preventDefault(); // Prevent default form submission
+
+    const rollNumber = document.getElementById("rollNumber").value;
+    const password = document.getElementById("password").value;
+
+    const response = await fetch("/student-login", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: `rollNumber=${encodeURIComponent(rollNumber)}&password=${encodeURIComponent(password)}`,
+    });
+
+    const resultText = await response.text();
+
+    if (resultText.includes("Invalid Roll Number or Password")) {
+        alert("Invalid Roll Number or Password");
+    } else {
+        // ✅ Save rollNumber in localStorage
+        localStorage.setItem("rollNumber", rollNumber);
+        // ✅ Redirect to student-dashboard
+        window.location.href = "/student-dashboard";
+    }
+  });
+</script>
+</body>
+</html>

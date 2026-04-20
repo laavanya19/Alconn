@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alumni Registration</title>
+  <link rel="stylesheet" href="../css/alumni-register.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Alumni Registration</h1>
+    <form id="alumniRegisterForm" action="/alumni-register" method="POST">
+      <input type="text" name="firstName" placeholder="First Name" required>
+      <input type="text" name="lastName" placeholder="Last Name" required>
+      <input type="text" name="rollNumber" placeholder="College Roll Number" required>
+      <input type="number" name="passoutYear" placeholder="Pass-out Year (e.g., 2023)" required>
+      <input type="text" name="branch" placeholder="Branch (e.g., IT, CSE)" required>
+      <input type="tel" name="phoneNumber" placeholder="Phone Number" required>
+      <input type="email" name="email" placeholder="Email" required>
+      <input type="password" name="password" placeholder="Password" required>
+      <input type="text" name="currentCompany" placeholder="Current Company" required>
+      <input type="text" name="currentRole" placeholder="Current Job Role" required>
+      <input type="text" name="pastCompanies" placeholder="Past Companies (comma separated)">
+      <input type="url" name="linkedin" placeholder="LinkedIn Profile URL (Optional)">
+      <input type="text" name="city" placeholder="Current City" required>
+      <input type="text" name="country" placeholder="Current Country" required>
+      <button type="submit">Register</button>
+    </form>
+    <p>Already registered? <a href="../views/alumni-login.html">Login here</a></p>
+  </div>
+</body>
+</html>

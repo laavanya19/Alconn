@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | Alconn</title>
+  <link rel="stylesheet" href="../css/admin-dashboard.css">
+</head>
+<body>
+  <div class="dashboard-container">
+    <h1>Welcome Admin</h1>
+
+    <!-- Search Bar for Admin Events -->
+    <input type="text" id="searchBarAdmin" placeholder="Search for events..." onkeyup="searchEventsAdmin()" />
+
+    <!-- Event Posting Section -->
+    <section class="post-event-section">
+      <h2>Post a New Event</h2>
+      <form id="eventForm">
+        <input type="text" id="title" placeholder="Event Title" required>
+        <textarea id="description" placeholder="Event Description" required></textarea>
+        <input type="date" id="date" required>
+        <input type="text" id="time" placeholder="Event Time (e.g. 10:00 AM - 4:00 PM)" required>
+        <input type="text" id="location" placeholder="Event Location" required>
+        <select id="mode" required>
+          <option value="">Select Mode</option>
+          <option value="Offline">Offline</option>
+          <option value="Online">Online</option>
+        </select>        
+        <input type="text" id="organizerName" placeholder="Organizer Name" required>
+        <input type="url" id="registrationLink" placeholder="Registration Link" required>
+        <input type="text" id="audience" placeholder="Target Audience (e.g. Both, Students)" required>
+        <input type="email" id="contactInfo" placeholder="Contact Email" required>
+        <button type="submit">Post Event</button>
+      </form>
+    </section>
+
+    <!-- Posted Events Section -->
+    <section class="events-section">
+      <h2>Posted Events</h2>
+      <ul id="eventsList"></ul>
+    </section>
+
+    <!-- Logout Button -->
+    <section class="logout-section">
+      <button onclick="logout()" class="logout-btn">Logout</button>
+    </section>    
+  </div>
+
+  <script>
+    let events = []; // Store events globally
+
+    async function fetchEvents() {
+      const res = await fetch('/admin/events');
+      events = await res.json(); // Store events in global variable
+      displayEvents(events); // Display all events initially
+    }
+
+    function displayEvents(eventsToDisplay) {
+      const list = document.getElementById('eventsList');
+      list.innerHTML = ''; // Clear existing list
+      eventsToDisplay.forEach(event => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <h3>${event.title}</h3>
+          <p>${event.description}</p>
+          <p><strong>Date:</strong> ${event.date.slice(0, 10)}</p>
+          <p><strong>Time:</strong> ${event.time}</p>
+          <p><strong>Location:</strong> ${event.location}</p>
+          <p><strong>Mode:</strong> ${event.mode}</p>
+          <p><strong>Organizer:</strong> ${event.organizerName}</p>
+          <p><strong>Audience:</strong> ${event.audience}</p>
+          <p><strong>Contact:</strong> ${event.contactInfo}</p>
+         
+          <button onclick="deleteEvent('${event._id}')">Delete</button>
+        `;
+        list.appendChild(li);
+      });
+    }
+
+    async function deleteEvent(id) {
+      await fetch(`/admin/events/${id}`, { method: 'DELETE' });
+      fetchEvents(); // Fetch updated events
+    }
+
+    document.getElementById('eventForm').addEventListener('submit', async e => {
+      e.preventDefault();
+      
+      // Collect event data from the form
+      const title = document.getElementById('title').value;
+      const description = document.getElementById('description').value;
+      const date = document.getElementById('date').value;
+      const time = document.getElementById('time').value;
+      const location = document.getElementById('location').value;
+      const mode = document.getElementById('mode').value;
+      const organizerName = document.getElementById('organizerName').value;
+      const registrationLink = document.getElementById('registrationLink').value;
+      const audience = document.getElementById('audience').value;
+      const contactInfo = document.getElementById('contactInfo').value;
+
+      // Post the event data to the server
+      await fetch('/admin/events', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title,
+          description,
+          date,
+          time,
+          location,
+          mode,
+          organizerName,
+          registrationLink,
+          audience,
+          contactInfo
+        })
+      });
+
+      // Reset the form and fetch updated events
+      document.getElementById('eventForm').reset();
+      fetchEvents();
+    });
+
+    // Function to search and filter events
+    function searchEventsAdmin() {
+      const query = document.getElementById('searchBarAdmin').value.toLowerCase();
+      const filteredEvents = events.filter(event => 
+        event.title.toLowerCase().includes(query) ||
+        event.description.toLowerCase().includes(query) ||
+        event.location.toLowerCase().includes(query) ||
+        event.organizerName.toLowerCase().includes(query)
+      );
+      displayEvents(filteredEvents); // Display filtered events
+    }
+
+    // Fetch and display events on page load
+    fetchEvents();
+
+    function logout() {
+      fetch('/logout', { method: 'POST' })
+        .then(() => {
+          window.location.href = '/admin-login';
+        });
+    }
+
+  </script>
+</body>
+</html>

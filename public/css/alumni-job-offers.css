@@ -1,0 +1,147 @@
+/* Reset some default styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Page layout */
+body {
+  background-color: #f2f6fc;
+  padding: 20px;
+  color: #333;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+header h1 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: #003366;
+}
+
+header button {
+  background-color: #0056b3;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+header button:hover {
+  background-color: #003d80;
+}
+
+/* Form styling */
+form {
+  background-color: #ffffff;
+  max-width: 700px;
+  margin: 0 auto 40px;
+  padding: 20px 30px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+}
+
+form label {
+  display: block;
+  margin-top: 15px;
+  font-weight: bold;
+  color: #333;
+}
+
+form input,
+form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+form button[type="submit"] {
+  margin-top: 20px;
+  padding: 12px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  width: 100%;
+}
+
+form button[type="submit"]:hover {
+  background-color: #1e7e34;
+}
+
+/* Status message */
+#statusMessage {
+  text-align: center;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+/* Job list */
+section {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+section h2 {
+  font-size: 1.6rem;
+  margin-bottom: 15px;
+  color: #003366;
+}
+
+#jobList {
+  list-style: none;
+}
+
+#jobList li {
+  background-color: #ffffff;
+  margin-bottom: 20px;
+  padding: 20px;
+  border-radius: 10px;
+  border-left: 5px solid #0056b3;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+}
+
+#jobList li strong {
+  font-size: 1.1rem;
+  color: #000;
+}
+
+#jobList li em {
+  color: #444;
+}
+
+#jobList li a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+#jobList li a:hover {
+  text-decoration: underline;
+}
+
+#jobList li button {
+  margin-top: 10px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#jobList li button:hover {
+  background-color: #c82333;
+}

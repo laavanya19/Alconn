@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Events | ALCONN</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f4f4f4;
+      text-align: center;
+    }
+
+    header {
+      background: #333;
+      color: white;
+      padding: 15px;
+    }
+
+    nav ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    nav ul li {
+      display: inline;
+      margin: 0 15px;
+    }
+
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+    }
+
+    .events, .past-events {
+      padding: 20px;
+    }
+
+    .event-list {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .event-card {
+      background: white;
+      padding: 15px;
+      margin: 10px;
+      width: 300px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      text-align: left;
+    }
+
+    .event-card h3 {
+      color: #007bff;
+    }
+
+    .event-card p {
+      margin: 5px 0;
+    }
+
+    button {
+      padding: 8px 15px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background: #007bff;
+      color: white;
+    }
+
+    footer {
+      background: #333;
+      color: white;
+      padding: 10px;
+      position: relative;
+      bottom: 0;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Upcoming Events</h1>
+    <nav>
+      <ul>
+        <button onclick="window.location.href='student-dashboard.html'">Back to Dashboard</button>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="events">
+    <h2>Upcoming Events</h2>
+    <div class="event-list" id="eventContainer">
+      <!-- Dynamic event cards go here -->
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2025 ALCONN | Events</p>
+  </footer>
+
+  <script>
+    async function fetchEvents() {
+      try {
+        const response = await fetch("/api/events"); // Update if your route is different
+        const events = await response.json();
+
+        const container = document.getElementById("eventContainer");
+        container.innerHTML = ""; // Clear any placeholders
+
+        if (events.length === 0) {
+          container.innerHTML = "<p>No upcoming events at the moment.</p>";
+          return;
+        }
+
+        events.forEach(event => {
+          const card = document.createElement("div");
+          card.className = "event-card";
+
+          card.innerHTML = `
+            <h3>${event.title}</h3>
+            <p><strong>Date:</strong> ${new Date(event.date).toLocaleDateString()}</p>
+            <p><strong>Time:</strong> ${event.time}</p>
+            <p><strong>Mode:</strong> ${event.mode}</p>
+            <p><strong>Location:</strong> ${event.location}</p>
+            <p><strong>Organizer:</strong> ${event.organizerName}</p>
+            <p><strong>Audience:</strong> ${event.audience}</p>
+            <p><strong>Contact:</strong> ${event.contactInfo}</p>
+            <a href="${event.registrationLink}" target="_blank">
+              <button>Register</button>
+            </a>
+          `;
+
+          container.appendChild(card);
+        });
+      } catch (err) {
+        console.error("Error fetching events:", err);
+        document.getElementById("eventContainer").innerHTML = "<p>Error loading events.</p>";
+      }
+    }
+
+    fetchEvents();
+  </script>
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Find Jobs | ALCONN</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f4f4f4;
+      text-align: center;
+    }
+
+    header {
+      background: #333;
+      color: white;
+      padding: 15px;
+    }
+
+    nav ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    nav ul li {
+      display: inline;
+      margin: 0 15px;
+    }
+
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+    }
+
+    .jobs {
+      padding: 20px;
+    }
+
+    .job-list {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .job-card {
+      background: white;
+      padding: 15px;
+      margin: 10px;
+      width: 300px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      text-align: left;
+    }
+
+    .job-card h3 {
+      color: #28a745;
+    }
+
+    .job-card p {
+      margin: 5px 0;
+    }
+
+    button {
+      padding: 8px 15px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background: #28a745;
+      color: white;
+    }
+
+    footer {
+      background: #333;
+      color: white;
+      padding: 10px;
+      position: relative;
+      bottom: 0;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Find Jobs</h1>
+    <nav>
+      <ul>
+        <button onclick="window.location.href='student-dashboard.html'">Back to Dashboard</button>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="jobs">
+    <h2>Opportunities Posted by Alumni</h2>
+    <div class="job-list" id="jobContainer">
+      <!-- Job offers will be rendered here dynamically -->
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2025 ALCONN | Job Portal</p>
+  </footer>
+
+  <script>
+    async function fetchJobs() {
+      try {
+        const response = await fetch("/api/jobs"); // Backend route to fetch job offers
+        const jobs = await response.json();
+
+        console.log("Fetched jobs:", jobs); // Log the entire response
+
+        const container = document.getElementById("jobContainer");
+        container.innerHTML = ""; // Clear placeholders
+
+        if (jobs.length === 0) {
+          container.innerHTML = "<p>No job opportunities available currently.</p>";
+          return;
+        }
+
+        jobs.forEach(job => {
+          console.log("Job object:", job); // Log each job to inspect its fields
+
+          // Check if the expected fields exist
+          const jobTitle = job.jobTitle || "Job Title not provided";
+          const companyName = job.companyName || "Company not provided";
+          const location = job.location || "Location not provided";
+          const description = job.description || "Description not provided";
+          const postedBy = job.postedBy || "Posted by not available";
+          const applyLink = job.applyLink || "#"; // Default to "#" if no apply link
+
+          console.log(`Job Title: ${jobTitle}, Company: ${companyName}, Location: ${location}`); // Debug output
+
+          const card = document.createElement("div");
+          card.className = "job-card";
+
+          card.innerHTML = `
+            <h3>${jobTitle}</h3>
+            <p><strong>Company:</strong> ${companyName}</p>
+            <p><strong>Location:</strong> ${location}</p>
+            <p><strong>Description:</strong> ${description}</p>
+            <p><strong>Posted By:</strong> ${postedBy}</p>
+            <a href="${applyLink}" target="_blank">
+              <button>Apply Now</button>
+            </a>
+          `;
+
+          container.appendChild(card);
+        });
+      } catch (err) {
+        console.error("Error fetching jobs:", err);
+        document.getElementById("jobContainer").innerHTML = "<p>Error loading job offers.</p>";
+      }
+    }
+
+    fetchJobs();
+  </script>
+</body>
+</html>

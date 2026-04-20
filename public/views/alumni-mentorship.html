@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mentorship | ALCONN</title>
+  <link rel="stylesheet" href="../css/alumni-mentorship.css">
+</head>
+<body>
+  <header>
+    <h1>Mentorship Opportunities</h1>
+    <button onclick="window.location.href='alumni-dashboard.html'">Back to Dashboard</button>
+  </header>
+
+  <main>
+    <section>
+      <h2>Available Mentorships</h2>
+      <div id="mentorshipList">
+        <div class="mentorship-box">
+          <h3>Loading mentorships...</h3>
+        </div>
+      </div>
+      <button id="offerMentorship">Offer Mentorship</button>
+    </section>
+  </main>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', async () => {
+      const alumniData = JSON.parse(localStorage.getItem('alumniData'));
+
+      const mentorshipList = document.getElementById('mentorshipList');
+
+      if (!alumniData || !alumniData.email) {
+        mentorshipList.innerHTML = '<div class="mentorship-box">No alumni logged in.</div>';
+        return;
+      }
+
+      try {
+        const response = await fetch(`/get-mentorships?alumniEmail=${encodeURIComponent(alumniData.email)}`);
+        const mentorships = await response.json();
+
+        mentorshipList.innerHTML = ''; // Clear loading message
+
+        if (mentorships.length === 0) {
+          mentorshipList.innerHTML = '<div class="mentorship-box">No mentorships posted yet.</div>';
+        } else {
+          mentorships.forEach(mentorship => {
+            const mentorshipDiv = document.createElement('div');
+            mentorshipDiv.classList.add('mentorship-box');
+            mentorshipDiv.innerHTML = `
+              <h3>${mentorship.topic}</h3>
+              <p><strong>Expertise:</strong> ${mentorship.expertise}</p>
+              <p><strong>Description:</strong> ${mentorship.description}</p>
+              <p><strong>Duration:</strong> ${mentorship.duration} weeks</p>
+              <p><strong>Mode:</strong> ${mentorship.mode}</p>
+              <p><strong>Skills Required:</strong> ${mentorship.skillsRequired.join(', ')}</p>
+              <p><strong>Seats Available:</strong> ${mentorship.seats}</p>
+              <p><strong>Timings:</strong> ${mentorship.timings}</p>
+              <p><strong>Contact:</strong> ${mentorship.contact}</p>
+              <button onclick="deleteMentorship('${mentorship._id}')">Delete</button>
+            `;
+            mentorshipList.appendChild(mentorshipDiv);
+          });
+        }
+      } catch (error) {
+        console.error('Error fetching mentorships:', error);
+        mentorshipList.innerHTML = '<div class="mentorship-box">Error retrieving mentorships.</div>';
+      }
+    });
+
+    document.getElementById('offerMentorship').addEventListener('click', () => {
+      window.location.href = 'offermentorship.html';
+    });
+
+    async function deleteMentorship(id) {
+      if (confirm("Are you sure you want to delete this mentorship?")) {
+        try {
+          const response = await fetch(`/delete-mentorship/${id}`, {
+            method: 'DELETE'
+          });
+
+          const result = await response.json();
+          if (response.ok) {
+            alert("Mentorship deleted successfully!");
+            location.reload(); // Refresh the page to show updated list
+          } else {
+            alert("Failed to delete: " + result.message);
+          }
+        } catch (err) {
+          console.error("Error deleting mentorship:", err);
+          alert("An error occurred while deleting mentorship.");
+        }
+      }
+    }
+  </script>
+</body>
+</html>

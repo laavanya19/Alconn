@@ -1,0 +1,89 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  body {
+    background: #f3f4f6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  /* Container */
+  .login-container {
+    background: white;
+    padding: 30px 40px;
+    width: 400px;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .login-container h1 {
+    margin-bottom: 20px;
+    color: #2cac25; /* Blue color for Student identity */
+  }
+  
+  /* Form */
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .login-form label {
+    text-align: left;
+    font-weight: bold;
+    color: #1c521f;
+  }
+  
+  .login-form input {
+    padding: 12px;
+    border: 2px solid #cbd5e1;
+    border-radius: 8px;
+    outline: none;
+    font-size: 14px;
+    transition: border 0.3s;
+  }
+  
+  .login-form input:focus {
+    border: 2px solid #26773e; /* Blue highlight */
+  }
+  
+  /* Button */
+  .login-btn {
+    padding: 12px;
+    background-color: #226526;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s;
+  }
+  
+  .login-btn:hover {
+    background-color: #1f642f;
+  }
+  
+  /* Extra options */
+  .extra-options {
+    margin-top: 15px;
+    font-size: 14px;
+  }
+  
+  .extra-options a {
+    color: #317648;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .extra-options a:hover {
+    text-decoration: underline;
+  }
+  

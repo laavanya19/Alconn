@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alumni Login | ALCONN</title>
+  <link rel="stylesheet" href="../css/alumni-login.css">
+</head>
+<body>
+  <div class="login-container">
+    <h1>Alumni Login</h1>
+    <form id="alumniLoginForm" class="login-form">
+      <label for="emailOrRoll">Email</label>
+      <input type="text" id="emailOrRoll" name="emailOrRoll" placeholder="Enter your email or roll number" required>
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" placeholder="Enter your password" required>
+      <button type="submit" class="login-btn">Login</button>
+    </form>
+
+    <p class="extra-options">Not registered? <a href="/alumni-register">Register Here</a></p>
+    <p class="extra-options"><a href="/">Back to Home</a></p>
+  </div>
+
+  <script>
+    // Custom login handling
+    document.getElementById('alumniLoginForm').addEventListener('submit', async function (e) {
+      e.preventDefault(); // Stop default form action
+
+      const emailOrRoll = document.getElementById('emailOrRoll').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      try {
+        const response = await fetch('/alumni-login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ emailOrRoll, password })
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.alumni) {
+          // Save alumni data to localStorage
+          localStorage.setItem('alumniData', JSON.stringify(result.alumni));
+          alert('Login successful!');
+          // Redirect to alumni dashboard
+          window.location.href = '/alumni-dashboard';
+        } else {
+          alert(result.message || 'Invalid credentials. Please try again.');
+        }
+      } catch (error) {
+        console.error('Login Error:', error);
+        alert('An error occurred. Please try again later.');
+      }
+    });
+  </script>
+</body>
+</html>

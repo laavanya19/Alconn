@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Offer Mentorship | ALCONN</title>
+  <link rel="stylesheet" href="../css/offermentorship.css">
+</head>
+<body>
+  <header>
+    <h1>Offer a Mentorship</h1>
+    <button onclick="window.location.href='alumni-mentorship.html'">Back to Mentorships</button>
+  </header>
+
+  <main>
+    <section>
+      <h2>Provide Mentorship Details</h2>
+      <form id="mentorshipForm">
+        <label for="mentorName">Your Name:</label>
+        <input type="text" id="mentorName" name="mentorName" required>
+
+        <label for="expertise">Expertise:</label>
+        <input type="text" id="expertise" name="expertise" required>
+
+        <label for="topic">Mentorship Topic:</label>
+        <input type="text" id="topic" name="topic" required>
+
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" rows="4" required></textarea>
+
+        <label for="duration">Duration (in weeks):</label>
+        <input type="number" id="duration" name="duration" required>
+
+        <label for="mode">Mode:</label>
+        <select id="mode" name="mode" required>
+          <option value="Online">Online</option>
+          <option value="Offline">Offline</option>
+          <option value="Hybrid">Hybrid</option>
+        </select>
+
+        <label for="skillsRequired">Required Skills:</label>
+        <input type="text" id="skillsRequired" name="skillsRequired" placeholder="E.g. Python, ML, Communication" required>
+
+        <label for="seats">Available Seats:</label>
+        <input type="number" id="seats" name="seats" required>
+
+        <label for="timings">Preferred Timings:</label>
+        <input type="text" id="timings" name="timings" placeholder="E.g. Weekends, 5 PM - 7 PM" required>
+
+        <label for="contact">Contact Information:</label>
+        <input type="email" id="contact" name="contact" required>
+
+        <button type="submit">Submit Mentorship</button>
+      </form>
+      <p id="statusMessage"></p>
+    </section>
+  </main>
+
+  <script>
+    // Auto-fill form using alumniData from localStorage
+    window.addEventListener('DOMContentLoaded', () => {
+      const alumniData = JSON.parse(localStorage.getItem('alumniData'));
+      if (alumniData) {
+        document.getElementById('mentorName').value = alumniData.name || '';
+        document.getElementById('expertise').value = alumniData.role || '';
+        document.getElementById('contact').value = alumniData.email || '';
+      }
+    });
+
+    // Handle form submission
+    document.getElementById('mentorshipForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const alumniData = JSON.parse(localStorage.getItem('alumniData'));
+      if (!alumniData || !alumniData.email) {
+        document.getElementById('statusMessage').textContent = 'You must be logged in to offer mentorship.';
+        document.getElementById('statusMessage').style.color = 'red';
+        return;
+      }
+
+      const mentorshipData = {
+        alumniEmail: alumniData.email, // Important to associate mentorship with alumni
+        mentorName: document.getElementById('mentorName').value,
+        expertise: document.getElementById('expertise').value,
+        topic: document.getElementById('topic').value,
+        description: document.getElementById('description').value,
+        duration: Number(document.getElementById('duration').value),
+        mode: document.getElementById('mode').value,
+        skillsRequired: document.getElementById('skillsRequired').value.split(',').map(skill => skill.trim()),
+        seats: Number(document.getElementById('seats').value),
+        timings: document.getElementById('timings').value,
+        contact: document.getElementById('contact').value
+      };
+
+      try {
+        const response = await fetch('/offer-mentorship', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(mentorshipData)
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+          document.getElementById('statusMessage').textContent = 'Mentorship posted successfully!';
+          document.getElementById('statusMessage').style.color = 'green';
+          document.getElementById('mentorshipForm').reset();
+        } else {
+          document.getElementById('statusMessage').textContent = 'Failed to post mentorship: ' + result.message;
+          document.getElementById('statusMessage').style.color = 'red';
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        document.getElementById('statusMessage').textContent = 'An error occurred.';
+        document.getElementById('statusMessage').style.color = 'red';
+      }
+    });
+  </script>  
+</body>
+</html>

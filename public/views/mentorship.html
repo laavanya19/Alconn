@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mentorship | ALCONN</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f4;
+            text-align: center;
+        }
+
+        header {
+            background: #333;
+            color: white;
+            padding: 15px;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .mentorship {
+            padding: 20px;
+        }
+
+        .mentor-list {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .mentor-card {
+            background: white;
+            padding: 15px;
+            margin: 10px;
+            width: 300px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        button {
+            padding: 8px 15px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .request-mentorship {
+            background: #007bff;
+            color: white;
+        }
+
+        footer {
+            background: #333;
+            color: white;
+            padding: 10px;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Mentorship Program</h1>
+        <nav>
+            <ul>
+                <li><a href="student-dashboard.html">Dashboard</a></li>
+                <li><a href="index.html" id="logout">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="mentorship">
+        <h2>Available Mentors</h2>
+        <div class="mentor-list" id="mentorList">
+            <!-- Mentor cards will be inserted here -->
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2025 ALCONN | Mentorship Program</p>
+    </footer>
+
+    <script>
+        async function fetchMentors() {
+            try {
+                const response = await fetch('/mentorships');
+                const mentors = await response.json();
+                const container = document.getElementById("mentorList");
+
+                if (mentors.length === 0) {
+                    container.innerHTML = "<p>No mentorship offers available at the moment.</p>";
+                    return;
+                }
+
+                mentors.forEach(mentor => {
+                    const card = document.createElement("div");
+                    card.className = "mentor-card";
+                    card.innerHTML = `
+                        <h3>${mentor.mentorName}</h3>
+                        <p><strong>Expertise:</strong> ${mentor.expertise}</p>
+                        <p><strong>Topic:</strong> ${mentor.topic}</p>
+                        <p><strong>Description:</strong> ${mentor.description}</p>
+                        <p><strong>Mode:</strong> ${mentor.mode}</p>
+                        <p><strong>Duration:</strong> ${mentor.duration} hours</p>
+                        <p><strong>Skills Required:</strong> ${mentor.skillsRequired.join(", ")}</p>
+                        <p><strong>Seats:</strong> ${mentor.seats}</p>
+                        <p><strong>Timings:</strong> ${mentor.timings}</p>
+                        <p><strong>Contact:</strong> ${mentor.contact}</p>
+                        <button class="request-mentorship">Request Mentorship</button>
+                    `;
+                    container.appendChild(card);
+                });
+            } catch (error) {
+                console.error("Error loading mentorship data:", error);
+            }
+        }
+
+        fetchMentors();
+    </script>
+</body>
+</html>
